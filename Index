@@ -1,0 +1,40 @@
+import javax.swing.*;
+import java.io.*;
+import java.nio.file.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.nio.file.Files.*;
+
+public class Rewriter {
+
+    public void copyDir(String folderWithFiles, String fileForRewrite) throws IOException {
+
+        File folder = new File(folderWithFiles);
+        File[] listOfFiles = folder.listFiles();
+
+        Path destDir = Paths.get(fileForRewrite);
+
+      if (listOfFiles != null)
+        for (File file : listOfFiles)
+
+          try{OutputStream fileOutputStream = newOutputStream(Path.of(String.valueOf(file)));
+             InputStream inputStream1 = newInputStream(destDir);
+             fileOutputStream.write(inputStream1.readAllBytes());
+          }catch (IOException ex){
+              ex.toString();
+          }
+    }
+
+    public static void main(String[] args) throws IOException {
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("Введите директорию где переписать файлы");
+        String sourceDirName = reader.readLine();
+        System.out.println("Введите исходный файл для перезаписи");
+        String targetSourceDir = reader.readLine();
+
+        Rewriter rewriter = new Rewriter();
+        rewriter.copyDir(sourceDirName, targetSourceDir);
+    }
+}
